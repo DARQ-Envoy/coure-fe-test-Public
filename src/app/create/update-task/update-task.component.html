@@ -1,0 +1,30 @@
+<div
+  id="update-container"
+  class="shadow-2xl w-[80%] h-fit rounded-sm absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+>
+  <h1 ngClass="text-3xl">
+    {{ task ? "Update: " + task.title : "Create new task" }}
+  </h1>
+  <form (submit)="updateTasks($event)">
+    <label for="title" ngClass="text-2xl">title</label>
+    <input type="text" id="title" name="task-title" />
+    <label for="description">Description</label>
+    <textarea name="description" id="description"></textarea>
+    <label for="due-date">Due date</label>
+    <input type="date" name="due-date" />
+    <label for="status">`set a status</label>
+    <select name="status">
+      <option value="">Select status</option>
+      <option value="pending">Pending</option>
+      <option value="in progress">In progress</option>
+      <option value="completed">Completed</option>
+    </select>
+    <select name="priority">
+      <option value="">Select priority</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+    <button type="submit">Set Task</button>
+  </form>
+</div>
