@@ -6,4 +6,8 @@
   Add Task
 </button>
 
-<update-task *ngIf="toCreateOrUpdate" [task]="taskToUpdate"></update-task>
+<update-task
+  *ngIf="!toHideEditor"
+  [task]="taskToUpdate"
+  (onSet)="hideEditor($event)"
+></update-task>

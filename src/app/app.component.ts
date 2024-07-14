@@ -1,6 +1,6 @@
 import { LocalStorageService } from './local-storage.service';
 import { allTasksGenerator } from './../utilities/generators';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AllTasks, Task } from 'src/utilities/data-structures';
 
 @Component({
@@ -8,30 +8,30 @@ import { AllTasks, Task } from 'src/utilities/data-structures';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  toCreateOrUpdate = false;
+export class AppComponent {
+  toHideEditor = true;
   taskToUpdate: Task | null = null;
   allTasks = allTasksGenerator();
-  allTasksArr = this.allTasks && Object.values(this.allTasks);
-  localStorageValue: string = '';
-
-  constructor(private localStorageService: LocalStorageService) {
-    const index = localStorage.getItem('index');
-    !index && localStorage.setItem('index', '-1');
-  }
-
+  allTasksArr: Task[] = Object.values(allTasksGenerator());
+  localStorageValue: Task | AllTasks = {};
+  localStorageService: LocalStorageService = inject(LocalStorageService);
+  constructor() {}
   ngOnInit(): void {
-    this.localStorageService.localStorageEvent.subscribe((value) => {
-      this.localStorageValue = value;
+    this.localStorageService.valueEmitter.subscribe((value) => {
+      this.allTasksArr = Object.values(allTasksGenerator());
     });
   }
   createOrUpdateTask(task: Task | null = null) {
-    this.toCreateOrUpdate = true;
+    this.toHideEditor = false;
     this.taskToUpdate = task;
   }
-
+  displayTaskDetails(task: Task) {}
+  hideEditor(value: boolean) {
+    console.log(value);
+    this.toHideEditor = value;
+  }
   ngOnDestroy(): void {
     // Unsubscribe to prevent memory leaks
-    this.localStorageService.localStorageEvent.unsubscribe();
+    this.localStorageService.valueEmitter.unsubscribe();
   }
 }

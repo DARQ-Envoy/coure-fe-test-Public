@@ -2,9 +2,11 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.14.
 
-## Development server
+## How to access the live rendering of this project
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Clone the repo using the git clone command
+- Run npm install under that repo's directory to install all dependencies
+- run "ng serve --open" to run a development server and open automatically
 
 ## Code scaffolding
 
@@ -25,3 +27,5 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+In this project, I focused on the base functionlity which simply is the ability of users to add and remove tasks from the task list.

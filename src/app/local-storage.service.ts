@@ -1,28 +1,32 @@
+import { Task, AllTasks } from 'src/utilities/data-structures';
 import { EventEmitter, Injectable } from '@angular/core';
+import { allTasksGenerator, taskIdGenerator } from 'src/utilities/generators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageService {
-  localStorageEvent = new EventEmitter<string>();
+  changedValue: string = '';
+  valueEmitter: EventEmitter<AllTasks | Task> = new EventEmitter();
+  allTasks: AllTasks = {};
   constructor() {
-    window.addEventListener('storage', (event) => {
-      if (event.key === 'tasks') {
-        this.localStorageEvent.emit(event.newValue?.toString()); // Emit changes
-      }
+    window.addEventListener('storage', () => {
+      this.valueEmitter.emit({});
     });
   }
-  setItem(key: string, value: string): void {
-    localStorage.setItem(key, value);
-    this.localStorageEvent.emit(value); // Emit changes
+  addTask(value: Task): void {
+    const allTasks = allTasksGenerator();
+    const id = taskIdGenerator();
+    const updatedTasks: AllTasks = { ...allTasks, [id]: value };
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    this.valueEmitter.emit(updatedTasks);
   }
-
-  getItem(key: string): string | null {
-    return localStorage.getItem(key);
-  }
-
-  removeItem(key: string): void {
-    localStorage.removeItem(key);
-    this.localStorageEvent.emit(undefined); // Emit changes
+  getTask(key: number) {
+    const fetchedTasks = localStorage.getItem('tasks');
+    if (fetchedTasks) {
+      this.allTasks = JSON.parse(fetchedTasks);
+      const value = this.allTasks[key];
+      this.valueEmitter.emit(value);
+    }
   }
 }

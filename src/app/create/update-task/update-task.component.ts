@@ -1,10 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Task } from 'src/utilities/data-structures';
-import {
-  taskAdditionGenerator,
-  taskIdGenerator,
-} from 'src/utilities/generators';
+import { LocalStorageService } from 'src/app/local-storage.service';
 
 @Component({
   selector: 'update-task',
@@ -13,7 +9,10 @@ import {
 })
 export class UpdateTaskComponent {
   @Input() task: Task | null = null;
+  @Output() onSet: EventEmitter<boolean> = new EventEmitter();
+  localStorageService: LocalStorageService = inject(LocalStorageService);
   updateTasks(ev: Event) {
+    this.onSet.emit(true);
     ev.preventDefault();
     const formData = ev.currentTarget as HTMLFormElement;
     const data: Task = {
@@ -23,8 +22,13 @@ export class UpdateTaskComponent {
       dueDate: formData['due-date'].value,
       status: formData['status'].value,
     };
-    console.log(data);
-    const taskId = taskIdGenerator();
-    const updatedTasks = taskAdditionGenerator(taskId, data);
+
+    this.localStorageService.addTask(data);
+    this.cleanUpForm(formData);
+  }
+  cleanUpForm(form: HTMLFormElement) {
+    Object.keys(form).forEach((key) => {
+      form[key].value = '';
+    });
   }
 }

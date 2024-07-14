@@ -6,5 +6,5 @@ export type Task = {
   status: 'pending' | 'in progress' | 'completed';
 };
 export type AllTasks = {
-  [x: string]: Task;
+  [x: number]: Task;
 };

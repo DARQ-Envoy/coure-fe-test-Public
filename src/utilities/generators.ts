@@ -11,10 +11,11 @@ export const taskIdGenerator: taskIdGeneratorType = () => {
   localStorage.setItem('index', String(newIndex));
   return newIndex;
 };
-export const allTasksGenerator: () => AllTasks | null = () => {
+export const allTasksGenerator: () => AllTasks = () => {
   const allTasksAsString = localStorage.getItem('tasks');
-  const allTasks: AllTasks | null =
-    allTasksAsString && JSON.parse(allTasksAsString);
+  const allTasks: AllTasks = allTasksAsString
+    ? JSON.parse(allTasksAsString)
+    : {};
   return allTasks;
 };
 export const taskAdditionGenerator: (key: number, value: Task) => AllTasks = (
