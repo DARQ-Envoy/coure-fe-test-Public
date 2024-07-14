@@ -7,5 +7,11 @@ import { Task } from 'src/utilities/data-structures';
   styleUrls: ['./task-details.component.css'],
 })
 export class TaskDetailsComponent {
-  @Input() task: Task | {} = {};
+  @Input() task: Task = {
+    title: '',
+    description: '',
+    priority: 'low',
+    dueDate: new Date(),
+    status: 'completed',
+  };
 }
